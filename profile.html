@@ -1,0 +1,49 @@
+<!-- profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - StreamNihongo</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <header class="main-header">
+    <a href="index.html" class="logo">Stream<span>Nihongo</span></a>
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="profile.html" class="nav-link active">My Watchlist</a>
+    </nav>
+  </header>
+
+  <main class="container profile-wrapper">
+    <!-- Meta Info Sidebar Panel -->
+    <aside class="profile-sidebar">
+      <div class="avatar-ring">
+        <img src="https://via.placeholder.com/150/00f0ff/000?text=User" alt="Avatar">
+      </div>
+      <h3>Tatsuya_Kun</h3>
+      <span class="user-tag">PRO MEMBER</span>
+    </aside>
+
+    <!-- Watchlist Grid Feed Area -->
+    <section style="flex: 1;">
+      <h2>Saved Watchlist</h2>
+      <div class="anime-card-grid" id="watchlist-container">
+        <!-- Structural Items injection point -->
+        <div class="anime-card">
+          <div class="card-thumbnail-wrapper">
+            <span class="card-badge">EP 24 END</span>
+            <img src="https://via.placeholder.com/300x450/12121a/00f0ff?text=Saved+Anime" alt="">
+          </div>
+          <div class="card-details">
+            <div class="card-title">Cyberpunk: Edgerunners</div>
+            <div class="card-metadata">Sci-Fi • Gore</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
