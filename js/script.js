@@ -4,7 +4,7 @@
 let currentAuthMode = 'login';
 
 // Your active Samsung S20+ live server proxy route via Pinggy
-const TUNNEL_URL = "https://tabti-2607-fb91-4bc-1c38-3ca8-a6e-3776-efad.run.pinggy-free.link/api/top-anime";
+https://dude9anime-backend.onrender.com/
 
 document.addEventListener('DOMContentLoaded', () => {
     loadAnimeAPI();
