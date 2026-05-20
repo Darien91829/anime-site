@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. CORE VARIABLES & DESIGN SYSTEM ("dude anime9" Theme)
+   1. CORE VARIABLES & DESIGN SYSTEM ("dude9anime" Theme)
    ========================================================================== */
 :root {
   --bg-color: #0a0a0f;           /* Deep Obsidian Black */
@@ -13,6 +13,15 @@
   --radius-card: 10px;
   --radius-pill: 20px;
   --transition-smooth: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* --- High Contrast Theme Switch Modification Injected via JS --- */
+body.high-contrast-theme {
+  --bg-color: #000000;
+  --surface-color: #0a0a0a;
+  --surface-hover: #121212;
+  --border-color: #00ff66;
+  --accent-green: #39ff14;       /* Laser Toxic Green */
 }
 
 /* --- Base Reset & Scrollbar --- */
@@ -60,7 +69,7 @@ body {
   z-index: 1000;
 }
 
-/* --- Unique Code-Badge Type Logo --- */
+/* --- Unique Code-Badge Type Logo (dude9anime Structure) --- */
 .custom-logo {
   display: inline-flex;
   align-items: center;
@@ -70,23 +79,30 @@ body {
   letter-spacing: -0.5px;
   line-height: 1;
   padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  transition: var(--transition-smooth);
   user-select: none;
 }
 
 .custom-logo .logo-bracket {
-  color: #222235; /* Dark brackets blend out initially */
+  color: #222235; 
   font-weight: 300;
   font-family: monospace;
-  transition: var(--transition-smooth);
 }
 
 .custom-logo .logo-prefix {
-  color: #f5f5fa; /* Clean white text */
+  color: #f5f5fa; 
   font-weight: 900;
   text-transform: lowercase;
   margin-left: 2px;
+}
+
+.custom-logo .logo-number {
+  color: var(--accent-mint); /* Mint Green number accent in the center */
+  font-style: normal;
+  display: inline-block;
+  font-weight: 900;
+  margin-left: 1px;
+  margin-right: 1px;
+  transform: scale(1.15);
 }
 
 .custom-logo .logo-suffix {
@@ -94,16 +110,7 @@ body {
   font-weight: 900;
   text-transform: uppercase;
   font-style: italic;
-  margin-left: 1px;
   letter-spacing: 0.5px;
-}
-
-.custom-logo .logo-number {
-  color: var(--accent-mint); /* Mint Green number accent */
-  font-style: normal;
-  display: inline-block;
-  margin-left: 1px;
-  transform: scale(1.1);
 }
 
 .custom-logo .logo-dot {
@@ -115,26 +122,7 @@ body {
   box-shadow: 0 0 8px var(--accent-green);
 }
 
-/* Logo Interactive Hover States */
-.custom-logo:hover {
-  background-color: rgba(0, 255, 102, 0.04);
-}
-
-.custom-logo:hover .logo-bracket {
-  color: var(--accent-green); /* Brackets light up green */
-  text-shadow: 0 0 8px rgba(0, 255, 102, 0.6);
-}
-
-.custom-logo:hover .logo-prefix {
-  color: var(--accent-green); /* Name switches matching brand color */
-}
-
-.custom-logo:hover .logo-suffix {
-  color: #f5f5fa; /* Clean inversion loop */
-  text-shadow: none;
-}
-
-/* --- Header Navigation Controls --- */
+/* --- Navigation Controls --- */
 .nav-tabs {
   display: flex;
   gap: 2rem;
@@ -210,6 +198,11 @@ body {
   background-color: var(--surface-color);
   padding: 2rem 1rem;
   border-right: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+}
+
+.sidebar.hide-panel {
+  display: none !important;
 }
 
 .sidebar-section {
@@ -255,6 +248,11 @@ body {
   background-color: var(--surface-color);
   padding: 2rem 1.25rem;
   border-left: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+}
+
+.sidebar-right.hide-panel {
+  display: none !important;
 }
 
 .content {
@@ -274,6 +272,10 @@ body {
   margin-bottom: 2.5rem;
   border: 1px solid var(--border-color);
   background: url("https://d32qys9a6wm9no.cloudfront.net/images/tvs/backdrop/73/a212dbb3d17a862c9639d04a3a746cba_1280x720.jpg?t=1716455401") center/cover;
+}
+
+.hero-section.hide-panel {
+  display: none !important;
 }
 
 .hero-overlay {
@@ -455,7 +457,7 @@ body {
 }
 
 .anime-rating {
-  color: #f39c12; /* Gold Star Color */
+  color: #f39c12; 
   margin-bottom: 0.4rem;
   font-size: 0.9rem;
   font-weight: bold;
@@ -466,7 +468,6 @@ body {
   font-size: 0.85rem;
 }
 
-/* Sidebar mini cards */
 .popular-item {
   display: flex;
   gap: 1rem;
@@ -513,7 +514,182 @@ body {
 }
 
 /* ==========================================================================
-   6. RESPONSIVE MEDIA BREAKPOINTS
+   6. INTERACTIVE SETTINGS MODAL LAYER DESIGN
+   ========================================================================== */
+.settings-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 10, 15, 0.85); 
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.settings-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.settings-box {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  width: 95%;
+  max-width: 500px;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  transform: translateY(-20px);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.settings-modal.open .settings-box {
+  transform: translateY(0);
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.settings-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.settings-header h3 i {
+  color: var(--accent-green);
+}
+
+.settings-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.settings-close:hover {
+  color: var(--accent-green);
+}
+
+.settings-body {
+  padding: 1.5rem;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(34, 34, 53, 0.5);
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.setting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 70%;
+}
+
+.setting-title {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.setting-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.setting-select {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+.setting-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.setting-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #222235;
+  transition: .3s;
+  border-radius: 24px;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--text-main);
+  transition: .3s;
+  border-radius: 50%;
+}
+
+input:checked + .switch-slider {
+  background-color: var(--accent-green);
+}
+
+input:checked + .switch-slider:before {
+  transform: translateX(22px);
+  background-color: var(--bg-color);
+}
+
+.settings-footer {
+  padding: 1.2rem 1.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* ==========================================================================
+   7. RESPONSIVE MEDIA BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1200px) {
   .sidebar-right {
