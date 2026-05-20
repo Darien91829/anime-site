@@ -1,0 +1,72 @@
+<!-- watch.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watching - StreamNihongo</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/watch.css">
+</head>
+<body>
+
+  <header class="main-header">
+    <a href="index.html" class="logo">Stream<span>Nihongo</span></a>
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="profile.html" class="nav-link">My Watchlist</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="watch-layout">
+      
+      <!-- Video Screen Column -->
+      <div class="player-column">
+        <div class="video-container">
+          <!-- Raw HTML5 Player Mockup with controls attached -->
+          <video id="animePlayer" controls poster="https://via.placeholder.com/1280x720/000/fff?text=Click+To+Play">
+            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="anime-header-details">
+          <h1 id="animeTitle" style="font-size: 1.8rem; font-weight: 800;">Loading Title...</h1>
+          <div class="anime-meta-tags">
+            <span class="tag-pill accent" id="episodeBadge">EP 1 Playing</span>
+            <span class="tag-pill" id="animeGenre">Action</span>
+          </div>
+          <div class="synopsis-box">
+            <p id="animeDescription">Loading plot details dynamically...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Playlist Selection Column -->
+      <div class="sidebar-column">
+        <div class="panel-title">Episodes</div>
+        <div class="episode-list" id="episodeListContainer">
+          <!-- Mock Item Loop Structure -->
+          <a href="#" class="episode-item active">
+            <img class="ep-thumb" src="https://via.placeholder.com/160x90/1a1a24/ff3366?text=Ep+1" alt="">
+            <div class="ep-meta">
+              <span class="ep-number">Episode 1</span>
+              <span class="ep-name">The Awakening Force</span>
+            </div>
+          </a>
+          <a href="#" class="episode-item">
+            <img class="ep-thumb" src="https://via.placeholder.com/160x90/1a1a24/707080?text=Ep+2" alt="">
+            <div class="ep-meta">
+              <span class="ep-number">Episode 2</span>
+              <span class="ep-name">Training Ground Encounters</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/player.js"></script>
+</body>
+</html>
