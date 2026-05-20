@@ -10,29 +10,58 @@
     />
     <style>
       /* ==========================================================================
-         1. CORE VARIABLES & DESIGN SYSTEM ("dude9anime" Theme)
+         1. CORE VARIABLES & DESIGN SYSTEM (Multi-Theme Palette Engine)
          ========================================================================== */
-      :root {
+         
+      /* Pattern 1: Obsidian Volt (Default Dark Green) */
+      :root, body.theme-default {
         --bg-color: #0a0a0f;           /* Deep Obsidian Black */
         --surface-color: #14141f;      /* Matte Layer Card Black */
         --surface-hover: #1b1b2a;      /* Lifted Component Black */
-        --accent-green: #00ff66;       /* Volt Green (Primary Action/Glow) */
+        --accent-green: #00ff66;       /* Volt Green (Primary Action) */
         --accent-mint: #00d4aa;        /* Cyber Mint (Secondary Metadata) */
         --text-main: #f5f5fa;          /* Crisp White Text */
         --text-muted: #6a6a7a;         /* Dimmed Gray Text */
-        --border-color: #222235;       /* Sharp Grid & Panel Borders */
+        --border-color: #222235;       /* Sharp Grid Panels */
         --radius-card: 10px;
         --radius-pill: 20px;
         --transition-smooth: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
       }
 
-      /* --- High Contrast Theme Switch Modification Injected via JS --- */
-      body.high-contrast-theme {
-        --bg-color: #000000;
-        --surface-color: #0a0a0a;
-        --surface-hover: #121212;
-        --border-color: #00ff66;
-        --accent-green: #39ff14;       /* Laser Toxic Green */
+      /* Pattern 2: Crimson Ghoul (Dark Tokyo Red) */
+      body.theme-crimson {
+        --bg-color: #0d0505;           /* Deep Blood Tint Black */
+        --surface-color: #1a0c0c;      /* Ghoul Crimson Surface */
+        --surface-hover: #261414;      /* Lifted Red Component */
+        --accent-green: #ff3333;       /* Crimson Fire Red Primary */
+        --accent-mint: #ff7744;        /* Dark Flame Orange Secondary */
+        --text-main: #fff5f5;          /* Warm Tinted White */
+        --text-muted: #806060;         /* Dim Red-Gray */
+        --border-color: #381818;       /* Slashed Maroon Border */
+      }
+
+      /* Pattern 3: Cyberpunk Neo-Tokyo (Purple & Gold Cyber Core) */
+      body.theme-cyberpunk {
+        --bg-color: #0b0714;           /* Deep Synthetic Violet */
+        --surface-color: #160f29;      /* Net-Runner Neon Purple */
+        --surface-hover: #21163d;      /* Brightened Grid Layer */
+        --accent-green: #00f0ff;       /* Electric Holo Cyan Primary */
+        --accent-mint: #ff007f;        /* Synthwave Hot Pink Secondary */
+        --text-main: #fdfaff;          /* Brilliant Stark White */
+        --text-muted: #736496;         /* Matrix Purple-Gray */
+        --border-color: #3a226b;       /* Laser Purple Enclosure Grid */
+      }
+
+      /* Pattern 4: Frost Ninja (Subzero Deep Ocean Blue) */
+      body.theme-frost {
+        --bg-color: #040a12;           /* Abyssal Frozen Deep */
+        --surface-color: #0a1829;      /* Ice Clan Fortified Core */
+        --surface-hover: #10253d;      /* Fractured Ice Hover State */
+        --accent-green: #33b5ff;       /* Glacial Frost Blue Primary */
+        --accent-mint: #99ffff;        /* Aurora Teal Accent Secondary */
+        --text-main: #f0f7ff;          /* Blizzard White */
+        --text-muted: #536f8f;         /* Chilled Slate Gray */
+        --border-color: #18375c;       /* Arctic Tundra Seams */
       }
 
       /* --- Base Reset & Scrollbar --- */
@@ -48,6 +77,7 @@
         color: var(--text-main);
         overflow-x: hidden;
         line-height: 1.5;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       ::-webkit-scrollbar {
@@ -78,6 +108,7 @@
         position: sticky;
         top: 0;
         z-index: 1000;
+        transition: var(--transition-smooth);
       }
 
       /* --- Unique Code-Badge Type Logo (dude9anime Structure) --- */
@@ -94,34 +125,38 @@
       }
 
       .custom-logo .logo-bracket {
-        color: #222235; 
+        color: var(--border-color); 
         font-weight: 300;
         font-family: monospace;
+        transition: var(--transition-smooth);
       }
 
       .custom-logo .logo-prefix {
-        color: #f5f5fa; 
+        color: var(--text-main); 
         font-weight: 900;
         text-transform: lowercase;
         margin-left: 2px;
+        transition: var(--transition-smooth);
       }
 
       .custom-logo .logo-number {
-        color: var(--accent-mint); /* Mint Green number accent in the center */
+        color: var(--accent-mint); /* Middle theme accent change number */
         font-style: normal;
         display: inline-block;
         font-weight: 900;
         margin-left: 1px;
         margin-right: 1px;
         transform: scale(1.15);
+        transition: var(--transition-smooth);
       }
 
       .custom-logo .logo-suffix {
-        color: var(--accent-green); /* Volt Green name */
+        color: var(--accent-green); /* Target Volt Green name assignment */
         font-weight: 900;
         text-transform: uppercase;
         font-style: italic;
         letter-spacing: 0.5px;
+        transition: var(--transition-smooth);
       }
 
       .custom-logo .logo-dot {
@@ -131,6 +166,7 @@
         border-radius: 50%;
         margin-left: 6px;
         box-shadow: 0 0 8px var(--accent-green);
+        transition: var(--transition-smooth);
       }
 
       /* --- Navigation Controls --- */
@@ -270,6 +306,7 @@
         flex: 1;
         padding: 2rem;
         background-color: var(--bg-color);
+        transition: var(--transition-smooth);
       }
 
       /* ==========================================================================
@@ -283,6 +320,7 @@
         margin-bottom: 2.5rem;
         border: 1px solid var(--border-color);
         background: url("https://d32qys9a6wm9no.cloudfront.net/images/tvs/backdrop/73/a212dbb3d17a862c9639d04a3a746cba_1280x720.jpg?t=1716455401") center/cover;
+        transition: var(--transition-smooth);
       }
 
       .hero-section.hide-panel {
@@ -318,6 +356,7 @@
         margin-bottom: 1rem;
         color: var(--accent-mint);
         font-weight: 600;
+        transition: var(--transition-smooth);
       }
 
       .hero-description {
@@ -325,6 +364,7 @@
         line-height: 1.6;
         color: var(--text-muted);
         font-size: 0.95rem;
+        transition: var(--transition-smooth);
       }
 
       .hero-buttons {
@@ -373,7 +413,7 @@
         transform: translate(-50%, -50%);
         width: 80px;
         height: 80px;
-        background-color: rgba(0, 255, 102, 0.9);
+        background-color: var(--accent-green);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -385,7 +425,6 @@
       }
 
       .play-button:hover {
-        background-color: var(--accent-green);
         transform: translate(-50%, -50%) scale(1.1);
         box-shadow: 0 0 40px rgba(0, 255, 102, 0.6);
       }
@@ -419,6 +458,7 @@
         height: 1.2rem;
         background-color: var(--accent-green);
         border-radius: 2px;
+        transition: var(--transition-smooth);
       }
 
       .anime-grid {
@@ -477,6 +517,7 @@
       .anime-genres {
         color: var(--text-muted);
         font-size: 0.85rem;
+        transition: var(--transition-smooth);
       }
 
       .popular-item {
@@ -522,6 +563,7 @@
       .popular-info p {
         color: var(--text-muted);
         font-size: 0.8rem;
+        transition: var(--transition-smooth);
       }
 
       /* ==========================================================================
@@ -608,7 +650,7 @@
         align-items: center;
         padding-bottom: 1.2rem;
         margin-bottom: 1.2rem;
-        border-bottom: 1px solid rgba(34, 34, 53, 0.5);
+        border-bottom: 1px solid var(--border-color);
       }
 
       .setting-row:last-child {
@@ -632,6 +674,7 @@
       .setting-desc {
         font-size: 0.8rem;
         color: var(--text-muted);
+        transition: var(--transition-smooth);
       }
 
       .setting-select {
@@ -642,6 +685,11 @@
         border-radius: 6px;
         outline: none;
         cursor: pointer;
+        transition: var(--transition-smooth);
+      }
+
+      .setting-select:focus {
+        border-color: var(--accent-green);
       }
 
       .setting-switch {
@@ -664,7 +712,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #222235;
+        background-color: var(--border-color);
         transition: .3s;
         border-radius: 24px;
       }
@@ -763,7 +811,6 @@
         color: var(--text-main);
         background-color: var(--surface-color);
         border-bottom: 2px solid var(--accent-green);
-        text-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
       }
 
       .auth-close {
@@ -839,7 +886,6 @@
 
       .auth-input:focus {
         border-color: var(--accent-green);
-        box-shadow: 0 0 12px rgba(0, 255, 102, 0.15);
       }
 
       .password-wrapper {
@@ -876,7 +922,6 @@
 
       .auth-submit-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(0, 255, 102, 0.3);
       }
 
       .auth-help-links {
@@ -1019,7 +1064,7 @@
               <h1 class="hero-title">ONE PUNCH MAN</h1>
               <h2 class="hero-subtitle">Season 3 Trending</h2>
               <p class="hero-description">
-                Saitama returns to clear out threats with a single punch while searching for an opponent capable of pushing his absolute limits. Modern dark UI, built for learning web development.
+                Saitama returns to clear out threats with a single punch while searching for an opponent capable of pushing his absolute limits. Change theme engines below to see layout alterations!
               </p>
               <div class="hero-buttons">
                 <a href="#" class="btn btn-primary" id="heroPlayBtn">
@@ -1091,19 +1136,21 @@
         <div class="settings-body">
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-title">Visual Layout Mode</span>
-              <span class="setting-desc">Switch between Obsidian Green or Toxic High-Contrast Dark.</span>
+              <span class="setting-title">Visual Layout Theme Matrix</span>
+              <span class="setting-desc">Swap custom engine color signatures to match your favorite anime vibes.</span>
             </div>
             <select class="setting-select" id="settingTheme">
-              <option value="default">Obsidian Green (Standard)</option>
-              <option value="high-contrast">Neon Cyber Core (Bright Accent)</option>
+              <option value="default">Obsidian Volt (Standard Green)</option>
+              <option value="crimson">Crimson Ghoul (Tokyo Red)</option>
+              <option value="cyberpunk">Cyberpunk Neo-Tokyo (Cyan/Pink)</option>
+              <option value="frost">Frost Ninja (Glacial Blue)</option>
             </select>
           </div>
 
           <div class="setting-row">
             <div class="setting-info">
               <span class="setting-title">Display Left Menu Sidebar</span>
-              <span class="setting-desc">Toggle layout routing panel view to expand content footprint.</span>
+              <span class="setting-desc">Toggle navigation panel view to expand content streaming space.</span>
             </div>
             <label class="setting-switch">
               <input type="checkbox" id="settingLeftSidebar" checked>
@@ -1114,7 +1161,7 @@
           <div class="setting-row">
             <div class="setting-info">
               <span class="setting-title">Display Right Activity Panel</span>
-              <span class="setting-desc">Toggle trending list tracking rows and watchlist feeds.</span>
+              <span class="setting-desc">Toggle metrics widget tracking rows and quick watchlist view.</span>
             </div>
             <label class="setting-switch">
               <input type="checkbox" id="settingRightSidebar" checked>
@@ -1175,7 +1222,7 @@
           </form>
 
           <div class="auth-help-links" id="loginHelp">
-            <a href="#" onclick="alert('Password reset token generated and dispatched to your email address link.')">Forgot Password?</a>
+            <a href="#" onclick="alert('Password reset token generated and dispatched to your email mailbox address link.')">Forgot Password?</a>
           </div>
         </div>
       </div>
@@ -1185,7 +1232,6 @@
       let currentAuthMode = 'login';
 
       document.addEventListener('DOMContentLoaded', () => {
-          // Initialize Core APIs and Local Databases
           loadAnimeAPI();
           initNavigationSystems();
           initSettingsEngine();
@@ -1194,7 +1240,7 @@
       });
 
       // ==========================================
-      // SECTION A: JIKAN API & COLLECTION HOOKS
+      // SECTION A: JIKAN TOP FEEDS API AGGREGATOR
       // ==========================================
       async function loadAnimeAPI() {
         try {
@@ -1218,20 +1264,20 @@
             `;
           });
 
-          // Injected Event Router onto dynamic elements
+          // Custom item tracking router alerts
           document.querySelectorAll(".anime-card").forEach((card) => {
             card.addEventListener("click", function () {
               const title = this.querySelector(".anime-title").textContent;
-              alert(`Opening custom video container for: ${title}...`);
+              alert(`Opening custom streaming room container matrix for: ${title}...`);
             });
           });
         } catch (err) {
-          console.error("Critical API data processing runtime exception: ", err);
+          console.error("Critical API loading error exception parsed: ", err);
         }
       }
 
       function initNavigationSystems() {
-        // Tab Layout Elements
+        // Core header categories tracker binding
         document.querySelectorAll(".nav-tab").forEach((tab) => {
           tab.addEventListener("click", function (e) {
             e.preventDefault();
@@ -1240,7 +1286,7 @@
           });
         });
 
-        // Sidebar Active States
+        // Sidebar selection mapping updates
         document.querySelectorAll(".sidebar-item").forEach((item) => {
           if(item.id === "sidebarSettingsTrigger" || item.id === "sidebarLoginTrigger") return;
           item.addEventListener("click", function (e) {
@@ -1250,12 +1296,11 @@
           });
         });
 
-        // Spotlight Play Triggers
-        const alertPlay = () => alert("Initiating high-bitrate video stream sequence for One Punch Man!");
+        // Interactive video modal warning frames
+        const alertPlay = () => alert("Initiating high-bitrate video container stream for One Punch Man!");
         document.getElementById("heroPlayBtn")?.addEventListener("click", (e) => { e.preventDefault(); alertPlay(); });
         document.getElementById("heroCirclePlayBtn")?.addEventListener("click", alertPlay);
 
-        // Sidebar popular widgets alert bindings
         document.querySelectorAll(".popular-item").forEach((item) => {
           item.addEventListener("click", function () {
             const title = this.querySelector("h4").textContent;
@@ -1265,7 +1310,7 @@
       }
 
       // ==========================================
-      // SECTION B: ARCHITECTURE STATE MANAGEMENT
+      // SECTION B: ARCHITECTURE SYSTEM CONTROL ENGINE
       // ==========================================
       function initSettingsEngine() {
           const modal = document.getElementById('settingsModal');
@@ -1312,11 +1357,9 @@
       }
 
       function applyLiveLayoutStates(theme, showLeft, showRight, showHero) {
-          if (theme === 'high-contrast') {
-              document.body.classList.add('high-contrast-theme');
-          } else {
-              document.body.classList.remove('high-contrast-theme');
-          }
+          // Flush old patterns and cycle dynamically into the updated choice signature selection
+          document.body.classList.remove('theme-default', 'theme-crimson', 'theme-cyberpunk', 'theme-frost');
+          document.body.classList.add(`theme-${theme}`);
 
           const leftSide = document.getElementById('leftSidebar');
           if (leftSide) leftSide.classList.toggle('hide-panel', !(showLeft === true || showLeft === 'true'));
@@ -1343,7 +1386,7 @@
       }
 
       // ==========================================
-      // SECTION C: AUTHENTICATION INTERACTIVE SYSTEM
+      // SECTION C: INTERACTIVE IDENTITY PORTAL
       // ==========================================
       function initAuthenticationMatrix() {
           const modal = document.getElementById('authModal');
@@ -1451,7 +1494,7 @@
                   }, 1200);
               } else {
                   alertBox.classList.add('error');
-                  alertBox.textContent = '❌ Credentials error: Invalid sequence parameters.';
+                  alertBox.textContent = '❌ Credentials error: Invalid structural parameters matching execution sequence.';
               }
           }
       }
