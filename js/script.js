@@ -3,6 +3,9 @@
    ========================================================================== */
 let currentAuthMode = 'login';
 
+// Your active Samsung S20+ live server proxy route via Pinggy
+const TUNNEL_URL = "https://tabti-2607-fb91-4bc-1c38-3ca8-a6e-3776-efad.run.pinggy-free.link/api/top-anime";
+
 document.addEventListener('DOMContentLoaded', () => {
     loadAnimeAPI();
     initNavigationSystems();
@@ -12,39 +15,84 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// SECTION A: JIKAN TOP FEEDS API AGGREGATOR
+// SECTION A: LIVE TERMUX BACKEND AGGREGATOR
 // ==========================================
 async function loadAnimeAPI() {
+  console.log("📡 Accessing live data matrix via Termux Pinggy tunnel...");
   try {
-    const res = await fetch("https://api.jikan.moe/v4/top/anime");
-    const data = await res.json();
+    const res = await fetch(TUNNEL_URL, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json"
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error(`Server returned status: ${res.status}`);
+    }
+
+    const result = await res.json();
+    const animeList = result.data;
+
     const grid = document.getElementById("animeGrid");
-    if (!grid) return;
+    if (!grid) {
+      console.error("❌ Target element '#animeGrid' not found in your index.html");
+      return;
+    }
     
     grid.innerHTML = "";
-    data.data.forEach((anime) => {
-      const genres = anime.genres ? anime.genres.map((g) => g.name).join(", ") : "";
+
+    // Fallback if the scraping engine returns an empty data set
+    if (!animeList || animeList.length === 0) {
+      grid.innerHTML = `<div class="error-msg" style="color: #ff4757; text-align: center; width: 100%;">No streaming records found. Check your Termux console logs.</div>`;
+      return;
+    }
+
+    // Maps the live scraped items into your visual cards structure
+    animeList.forEach((anime) => {
+      const posterImg = anime.image_url || 'https://via.placeholder.com/225x320?text=No+Poster';
+      
       grid.innerHTML += `
-        <div class="anime-card">
-            <div class="anime-poster" style="background-image: url('${anime.images.jpg.image_url}')"></div>
+        <div class="anime-card" data-url="${anime.url || '#'}">
+            <div class="anime-poster" style="background-image: url('${posterImg}')"></div>
             <div class="anime-info">
                 <div class="anime-title">${anime.title}</div>
-                <div class="anime-rating"><i class="fas fa-star"></i> ${anime.score || "N/A"}</div>
-                <div class="anime-genres">${genres}</div>
+                <div class="anime-rating"><i class="fas fa-play-circle"></i> ${anime.score}</div>
+                <div class="anime-genres">Live Stream Matrix</div>
             </div>
         </div>
       `;
     });
 
-    // Custom item tracking router alerts
+    // Custom interactive streaming routers
     document.querySelectorAll(".anime-card").forEach((card) => {
       card.addEventListener("click", function () {
+        const targetStream = this.getAttribute("data-url");
         const title = this.querySelector(".anime-title").textContent;
-        alert(`Opening custom streaming room container matrix for: ${title}...`);
+        
+        if (targetStream && targetStream !== '#') {
+          window.open(targetStream, '_blank');
+        } else {
+          alert(`Streaming mirrors generating for: ${title}...`);
+        }
       });
     });
+
+    console.log(`✅ Successfully loaded ${animeList.length} live anime cards into the DOM!`);
+
   } catch (err) {
     console.error("Critical API loading error exception parsed: ", err);
+    const grid = document.getElementById("animeGrid");
+    if (grid) {
+      grid.innerHTML = `
+        <div style="color: #ff4757; text-align: center; padding: 20px; font-weight: bold; width: 100%;">
+          ⚠️ Connection Offline<br>
+          <span style="font-size: 12px; font-weight: normal; color: #a4b0be;">
+            Make sure your Samsung S20+ Termux server is running and your Pinggy URL is still active!
+          </span>
+        </div>
+      `;
+    }
   }
 }
 
@@ -129,7 +177,6 @@ function initSettingsEngine() {
 }
 
 function applyLiveLayoutStates(theme, showLeft, showRight, showHero) {
-    // Flush old patterns and cycle dynamically into the updated choice signature selection
     document.body.classList.remove('theme-default', 'theme-crimson', 'theme-cyberpunk', 'theme-frost');
     document.body.classList.add(`theme-${theme}`);
 
