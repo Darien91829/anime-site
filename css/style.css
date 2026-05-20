@@ -1,4 +1,61 @@
 /* ==========================================================================
+   1. CORE VARIABLES & DESIGN SYSTEM (Multi-Theme Palette Engine)
+   ========================================================================== */
+   
+/* Pattern 1: Obsidian Volt (Default Dark Green) */
+:root, body.theme-default {
+  --bg-color: #0a0a0f;           /* Deep Obsidian Black */
+  --surface-color: #14141f;      /* Matte Layer Card Black */
+  --surface-hover: #1b1b2a;      /* Lifted Component Black */
+  --accent-green: #00ff66;       /* Volt Green (Primary) */
+  --accent-mint: #00d4aa;        /* Cyber Mint (Secondary) */
+  --text-main: #f5f5fa;          /* Crisp White Text */
+  --text-muted: #6a6a7a;         /* Dimmed Gray Text */
+  --border-color: #222235;       /* Sharp Grid Panels */
+  --radius-card: 10px;
+  --radius-pill: 20px;
+  --transition-smooth: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Pattern 2: Crimson Ghoul (Dark Tokyo Red) */
+body.theme-crimson {
+  --bg-color: #0d0505;           /* Deep Blood Tint Black */
+  --surface-color: #1a0c0c;      /* Ghoul Crimson Surface */
+  --surface-hover: #261414;      /* Lifted Red Component */
+  --accent-green: #ff3333;       /* Crimson Fire Red Primary */
+  --accent-mint: #ff7744;        /* Dark Flame Orange Secondary */
+  --text-main: #fff5f5;          /* Warm Tinted White */
+  --text-muted: #806060;         /* Dim Red-Gray */
+  --border-color: #381818;       /* Slashed Maroon Border */
+}
+
+/* Pattern 3: Cyberpunk Neo-Tokyo (Purple & Gold Cyber Core) */
+body.theme-cyberpunk {
+  --bg-color: #0b0714;           /* Deep Synthetic Violet */
+  --surface-color: #160f29;      /* Net-Runner Neon Purple */
+  --surface-hover: #21163d;      /* Brightened Grid Layer */
+  --accent-green: #00f0ff;       /* Electric Holo Cyan Primary */
+  --accent-mint: #ff007f;        /* Synthwave Hot Pink Secondary */
+  --text-main: #fdfaff;          /* Brilliant Stark White */
+  --text-muted: #736496;         /* Matrix Purple-Gray */
+  --border-color: #3a226b;       /* Laser Purple Enclosure Grid */
+}
+
+/* Pattern 4: Frost Ninja (Subzero Deep Ocean Blue) */
+body.theme-frost {
+  --bg-color: #040a12;           /* Abyssal Frozen Deep */
+  --surface-color: #0a1829;      /* Ice Clan Fortified Core */
+  --surface-hover: #10253d;      /* Fractured Ice Hover State */
+  --accent-green: #33b5ff;       /* Glacial Frost Blue Primary */
+  --accent-mint: #99ffff;        /* Aurora Teal Accent Secondary */
+  --text-main: #f0f7ff;          /* Blizzard White */
+  --text-muted: #536f8f;         /* Chilled Slate Gray */
+  --border-color: #18375c;       /* Arctic Tundra Seams */
+}
+
+/* Base resets, typography structures, and custom components follow directly below... */
+
+/* ==========================================================================
    1. CORE VARIABLES & DESIGN SYSTEM ("dude9anime" Theme)
    ========================================================================== */
 :root {
