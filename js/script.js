@@ -3,8 +3,8 @@
    ========================================================================== */
 let currentAuthMode = 'login';
 
-// Your active Samsung S20+ live server proxy route via Pinggy
-https://dude9anime-backend.onrender.com/
+// Your permanent 24/7 Render Cloud Server URL Route
+const TUNNEL_URL = "https://dude9anime-backend.onrender.com/api/top-anime";
 
 document.addEventListener('DOMContentLoaded', () => {
     loadAnimeAPI();
@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// SECTION A: LIVE TERMUX BACKEND AGGREGATOR
+// SECTION A: LIVE CLOUD BACKEND AGGREGATOR
 // ==========================================
 async function loadAnimeAPI() {
-  console.log("📡 Accessing live data matrix via Termux Pinggy tunnel...");
+  console.log("📡 Accessing live data matrix via Render Cloud Engine...");
   try {
     const res = await fetch(TUNNEL_URL, {
       method: "GET",
@@ -44,7 +44,7 @@ async function loadAnimeAPI() {
 
     // Fallback if the scraping engine returns an empty data set
     if (!animeList || animeList.length === 0) {
-      grid.innerHTML = `<div class="error-msg" style="color: #ff4757; text-align: center; width: 100%;">No streaming records found. Check your Termux console logs.</div>`;
+      grid.innerHTML = `<div class="error-msg" style="color: #ff4757; text-align: center; width: 100%;">No streaming records found. Check your Render console logs.</div>`;
       return;
     }
 
@@ -78,7 +78,7 @@ async function loadAnimeAPI() {
       });
     });
 
-    console.log(`✅ Successfully loaded ${animeList.length} live anime cards into the DOM!`);
+    console.log(`✅ Successfully loaded ${animeList.length} live cloud anime cards into the DOM!`);
 
   } catch (err) {
     console.error("Critical API loading error exception parsed: ", err);
@@ -88,7 +88,7 @@ async function loadAnimeAPI() {
         <div style="color: #ff4757; text-align: center; padding: 20px; font-weight: bold; width: 100%;">
           ⚠️ Connection Offline<br>
           <span style="font-size: 12px; font-weight: normal; color: #a4b0be;">
-            Make sure your Samsung S20+ Termux server is running and your Pinggy URL is still active!
+            Make sure your Render web service dashboard deployment is active and working!
           </span>
         </div>
       `;
@@ -238,6 +238,7 @@ function initAuthenticationMatrix() {
     checkExistingUserSession();
 }
 
+// Keep regular registration and session mechanisms intact
 function openAuthInterface() {
     if (localStorage.getItem('da9_userSession')) {
         if (confirm('🔒 Sign Out from your current dude9anime profile account session?')) {
