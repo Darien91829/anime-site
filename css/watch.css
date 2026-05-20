@@ -1,0 +1,153 @@
+/* --- Watch Space Split Layout Architecture --- */
+.watch-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+/* Player Column Components */
+.player-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: black;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+}
+
+.anime-header-details {
+  margin-top: 1.5rem;
+}
+
+.anime-meta-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.tag-pill {
+  background-color: var(--surface-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.tag-pill.accent {
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.synopsis-box {
+  background-color: var(--surface-color);
+  padding: 1.5rem;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Sidebar Playlist Component Elements */
+.sidebar-column {
+  background-color: var(--surface-color);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-color);
+  padding: 1.25rem;
+  height: max-content;
+  max-height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.episode-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-right: 4px;
+}
+
+/* Elegant custom scrollbar */
+.episode-list::-webkit-scrollbar { width: 4px; }
+.episode-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 2px; }
+
+.episode-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-smooth);
+  background-color: rgba(255,255,255,0.02);
+}
+
+.episode-item:hover {
+  background-color: var(--surface-hover);
+}
+
+.episode-item.active {
+  background-color: rgba(0, 240, 255, 0.05);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.ep-thumb {
+  width: 110px;
+  aspect-ratio: 16 / 9;
+  background-color: var(--bg-color);
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.ep-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ep-number {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-pink);
+}
+
+.episode-item.active .ep-number {
+  color: var(--accent-cyan);
+}
+
+.ep-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  color: var(--text-main);
+}
+
+/* --- Responsive Engine Watch View --- */
+@media (max-width: 1024px) {
+  .watch-layout { grid-template-columns: 1fr; }
+  .sidebar-column { max-height: 400px; }
+}
