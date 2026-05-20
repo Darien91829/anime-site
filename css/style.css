@@ -30,7 +30,6 @@ body {
   line-height: 1.5;
 }
 
-/* Custom modern scrollbars across panels */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -47,7 +46,7 @@ body {
 }
 
 /* ==========================================================================
-   2. HEADER & NAVIGATION
+   2. HEADER & CUSTOM BRAND LOGO SYSTEM
    ========================================================================== */
 .header {
   display: flex;
@@ -61,28 +60,81 @@ body {
   z-index: 1000;
 }
 
-/* --- "dude anime9" Logo Treatment --- */
-.logo {
-  display: flex;
+/* --- Unique Code-Badge Type Logo --- */
+.custom-logo {
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-family: 'Poppins', 'Arial Black', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-main);
   text-decoration: none;
+  font-family: 'Arial Black', 'Impact', sans-serif;
+  font-size: 1.5rem;
   letter-spacing: -0.5px;
-  text-transform: lowercase;
+  line-height: 1;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: var(--transition-smooth);
+  user-select: none;
 }
 
-.logo span {
-  color: var(--accent-green);
-  text-transform: uppercase;
+.custom-logo .logo-bracket {
+  color: #222235; /* Dark brackets blend out initially */
+  font-weight: 300;
+  font-family: monospace;
+  transition: var(--transition-smooth);
+}
+
+.custom-logo .logo-prefix {
+  color: #f5f5fa; /* Clean white text */
   font-weight: 900;
-  font-style: italic;
-  text-shadow: 0 0 12px rgba(0, 255, 102, 0.4);
+  text-transform: lowercase;
+  margin-left: 2px;
 }
 
+.custom-logo .logo-suffix {
+  color: var(--accent-green); /* Volt Green name */
+  font-weight: 900;
+  text-transform: uppercase;
+  font-style: italic;
+  margin-left: 1px;
+  letter-spacing: 0.5px;
+}
+
+.custom-logo .logo-number {
+  color: var(--accent-mint); /* Mint Green number accent */
+  font-style: normal;
+  display: inline-block;
+  margin-left: 1px;
+  transform: scale(1.1);
+}
+
+.custom-logo .logo-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+  margin-left: 6px;
+  box-shadow: 0 0 8px var(--accent-green);
+}
+
+/* Logo Interactive Hover States */
+.custom-logo:hover {
+  background-color: rgba(0, 255, 102, 0.04);
+}
+
+.custom-logo:hover .logo-bracket {
+  color: var(--accent-green); /* Brackets light up green */
+  text-shadow: 0 0 8px rgba(0, 255, 102, 0.6);
+}
+
+.custom-logo:hover .logo-prefix {
+  color: var(--accent-green); /* Name switches matching brand color */
+}
+
+.custom-logo:hover .logo-suffix {
+  color: #f5f5fa; /* Clean inversion loop */
+  text-shadow: none;
+}
+
+/* --- Header Navigation Controls --- */
 .nav-tabs {
   display: flex;
   gap: 2rem;
@@ -107,7 +159,6 @@ body {
   background-color: var(--surface-hover);
 }
 
-/* --- Responsive Input Fields --- */
 .search-bar {
   display: flex;
   align-items: center;
@@ -154,7 +205,6 @@ body {
   min-height: calc(100vh - 80px);
 }
 
-/* --- Left Utility Sidebar --- */
 .sidebar {
   width: 250px;
   background-color: var(--surface-color);
@@ -200,7 +250,6 @@ body {
   box-shadow: 0 4px 15px rgba(0, 255, 102, 0.2);
 }
 
-/* --- Right Activity Sidebar --- */
 .sidebar-right {
   width: 320px;
   background-color: var(--surface-color);
@@ -208,7 +257,6 @@ body {
   border-left: 1px solid var(--border-color);
 }
 
-/* --- Central Primary Content Dynamic Area --- */
 .content {
   flex: 1;
   padding: 2rem;
@@ -225,6 +273,7 @@ body {
   overflow: hidden;
   margin-bottom: 2.5rem;
   border: 1px solid var(--border-color);
+  background: url("https://d32qys9a6wm9no.cloudfront.net/images/tvs/backdrop/73/a212dbb3d17a862c9639d04a3a746cba_1280x720.jpg?t=1716455401") center/cover;
 }
 
 .hero-overlay {
@@ -270,7 +319,6 @@ body {
   gap: 1rem;
 }
 
-/* --- Reusable Action Buttons --- */
 .btn {
   padding: 0.8rem 1.5rem;
   border: none;
@@ -305,7 +353,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* --- Central Floating Action Play Button --- */
 .play-button {
   position: absolute;
   top: 50%;
@@ -336,7 +383,7 @@ body {
 }
 
 /* ==========================================================================
-   5. COMPONENT CARDS & FEED ROW SYSTEMS
+   5. COMPONENT CARDS & GRID ROW SYSTEMS
    ========================================================================== */
 .section {
   margin-bottom: 3rem;
@@ -352,7 +399,6 @@ body {
   gap: 0.5rem;
 }
 
-/* Green header line decorator matching old framework requirements */
 .section-title::before {
   content: '';
   display: inline-block;
@@ -368,7 +414,6 @@ body {
   gap: 1.5rem;
 }
 
-/* --- Main Card Architecture --- */
 .anime-card {
   background-color: var(--surface-color);
   border-radius: var(--radius-card);
@@ -410,7 +455,7 @@ body {
 }
 
 .anime-rating {
-  color: #f39c12; /* Golden Star */
+  color: #f39c12; /* Gold Star Color */
   margin-bottom: 0.4rem;
   font-size: 0.9rem;
   font-weight: bold;
@@ -421,7 +466,7 @@ body {
   font-size: 0.85rem;
 }
 
-/* --- Tiny Horizontal Sidebar Mini Cards --- */
+/* Sidebar mini cards */
 .popular-item {
   display: flex;
   gap: 1rem;
@@ -468,11 +513,11 @@ body {
 }
 
 /* ==========================================================================
-   6. RESPONSIVE MATRIX MEDIA ENGINE
+   6. RESPONSIVE MEDIA BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1200px) {
   .sidebar-right {
-    display: none; /* Collapses right column on small desktops/tablets */
+    display: none;
   }
 }
 
@@ -484,7 +529,7 @@ body {
     width: 180px;
   }
   .nav-tabs {
-    display: none; /* Hides desktop tracking tabs */
+    display: none;
   }
   .main-container {
     flex-direction: column;
@@ -510,7 +555,7 @@ body {
     font-size: 2rem;
   }
   .play-button {
-    display: none; /* Drops spatial floating targets on mobile touch ports */
+    display: none;
   }
   .anime-grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
