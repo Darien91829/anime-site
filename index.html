@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>dudeanime9 - Home</title>
+  <title>dude9anime - Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link rel="stylesheet" href="css/style.css" />
@@ -13,7 +13,8 @@
     <a href="index.html" class="custom-logo">
       <span class="logo-bracket">[</span>
       <span class="logo-prefix">dude</span>
-      <span class="logo-suffix">anime<span class="logo-number">9</span></span>
+      <span class="logo-number">9</span>
+      <span class="logo-suffix">anime</span>
       <span class="logo-bracket">]</span>
       <span class="logo-dot"></span>
     </a>
@@ -31,7 +32,7 @@
         placeholder="Type to search..."
       />
       <div class="user-actions">
-        <i class="fas fa-cog" style="cursor: pointer"></i>
+        <i class="fas fa-cog" id="headerSettingsTrigger" style="cursor: pointer"></i>
         <a href="profile.html" style="color: inherit; text-decoration: none;">
           <i class="fas fa-user-circle" style="cursor: pointer;"></i>
         </a>
@@ -41,7 +42,7 @@
 
   <div class="main-container">
     
-    <aside class="sidebar">
+    <aside class="sidebar" id="leftSidebar">
       <div class="sidebar-section">
         <h3 class="sidebar-title">Menu</h3>
         <a href="index.html" class="sidebar-item active">
@@ -66,14 +67,13 @@
       </div>
       <div class="sidebar-section">
         <h3 class="sidebar-title">General</h3>
-        <a href="#" class="sidebar-item"><i class="fas fa-cog"></i> Settings</a>
+        <a href="#" class="sidebar-item" id="sidebarSettingsTrigger"><i class="fas fa-cog"></i> Settings</a>
         <a href="login.html" class="sidebar-item"><i class="fas fa-sign-in-alt"></i> Sign In</a>
       </div>
     </aside>
 
     <main class="content">
-      
-      <section class="hero-section">
+      <section class="hero-section" id="heroBanner">
         <div class="hero-overlay">
           <div class="hero-content">
             <h1 class="hero-title">ONE PUNCH MAN</h1>
@@ -100,7 +100,7 @@
       </section>
     </main>
 
-    <aside class="sidebar-right">
+    <aside class="sidebar-right" id="rightSidebar">
       <div class="sidebar-section">
         <h3 class="sidebar-title">Popular Anime</h3>
         <div class="popular-item">
@@ -140,7 +140,67 @@
 
   </div>
 
+  <div class="settings-modal" id="settingsModal">
+    <div class="settings-box">
+      <div class="settings-header">
+        <h3><i class="fas fa-sliders-h"></i> Control Center</h3>
+        <button class="settings-close" id="closeSettingsBtn">&times;</button>
+      </div>
+      
+      <div class="settings-body">
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-title">Visual Layout Mode</span>
+            <span class="setting-desc">Switch between Obsidian Green or Toxic High-Contrast Dark.</span>
+          </div>
+          <select class="setting-select" id="settingTheme">
+            <option value="default">Obsidian Green (Standard)</option>
+            <option value="high-contrast">Neon Cyber Core (Bright Accent)</option>
+          </select>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-title">Display Left Menu Sidebar</span>
+            <span class="setting-desc">Toggle layout routing panel view to expand content footprint.</span>
+          </div>
+          <label class="setting-switch">
+            <input type="checkbox" id="settingLeftSidebar" checked>
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-title">Display Right Activity Panel</span>
+            <span class="setting-desc">Toggle trending list tracking rows and watchlist feeds.</span>
+          </div>
+          <label class="setting-switch">
+            <input type="checkbox" id="settingRightSidebar" checked>
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-title">Cinematic Showcase Hero Banner</span>
+            <span class="setting-desc">Show or hide the large billboard background cover.</span>
+          </div>
+          <label class="setting-switch">
+            <input type="checkbox" id="settingHero" checked>
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-footer">
+        <button class="btn btn-secondary" id="resetSettingsBtn">Factory Defaults</button>
+        <button class="btn btn-primary" id="saveSettingsBtn">Apply & Save Engine</button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/app.js"></script>
-  <script src="js/search.js"></script>
+  <script src="js/settings.js"></script>
 </body>
 </html>
