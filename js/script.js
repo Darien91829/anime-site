@@ -1,10 +1,10 @@
 /* ==========================================================================
-   DYNAMIC INTEGRATED RUNTIME CONTROLLER LOGIC ENGINE
+   DYNAMIC INTEGRATED RUNTIME CONTROLLER LOGIC ENGINE (ANILIST FLIX EDITION)
    ========================================================================== */
 let currentAuthMode = 'login';
 
-// Your permanent 24/7 Render Cloud Server URL Route
-const TUNNEL_URL = "https://dude9anime-backend.onrender.com/api/top-anime";
+// Directly queries the AniList GraphQL engine (Safe, fast, and 24/7 cloud approved)
+const ANILIST_API_URL = "https://graphql.anilist.co";
 
 document.addEventListener('DOMContentLoaded', () => {
     loadAnimeAPI();
@@ -15,24 +15,47 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// SECTION A: LIVE CLOUD BACKEND AGGREGATOR
+// SECTION A: ANILIST MEDIA SYNC ENGINE
 // ==========================================
 async function loadAnimeAPI() {
-  console.log("📡 Accessing live data matrix via Render Cloud Engine...");
-  try {
-    const res = await fetch(TUNNEL_URL, {
-      method: "GET",
-      headers: {
-        "Accept": "application/json"
+  console.log("📡 Accessing live media streams via AniList Core Sync Layer...");
+  
+  // The official GraphQL parameters used to fetch trending shows
+  const query = `
+    query {
+      Page(page: 1, perPage: 24) {
+        media(sort: TRENDING_DESC, type: ANIME) {
+          id
+          title {
+            english
+            romaji
+          }
+          coverImage {
+            large
+          }
+          averageScore
+          genres
+        }
       }
+    }
+  `;
+
+  try {
+    const res = await fetch(ANILIST_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({ query: query })
     });
 
     if (!res.ok) {
-      throw new Error(`Server returned status: ${res.status}`);
+      throw new Error(`AniList returned structural status error: ${res.status}`);
     }
 
-    const result = await res.json();
-    const animeList = result.data;
+    const jsonResult = await res.json();
+    const animeList = jsonResult.data.Page.media;
 
     const grid = document.getElementById("animeGrid");
     if (!grid) {
@@ -42,43 +65,40 @@ async function loadAnimeAPI() {
     
     grid.innerHTML = "";
 
-    // Fallback if the scraping engine returns an empty data set
-    if (!animeList || animeList.length === 0) {
-      grid.innerHTML = `<div class="error-msg" style="color: #ff4757; text-align: center; width: 100%;">No streaming records found. Check your Render console logs.</div>`;
-      return;
-    }
-
-    // Maps the live scraped items into your visual cards structure
     animeList.forEach((anime) => {
-      const posterImg = anime.image_url || 'https://via.placeholder.com/225x320?text=No+Poster';
-      
+      const title = anime.title.english || anime.title.romaji;
+      const posterImg = anime.coverImage.large || 'https://via.placeholder.com/225x320?text=No+Poster';
+      const score = anime.averageScore ? (anime.averageScore / 10).toFixed(1) : "8.1";
+      const primaryGenre = anime.genres && anime.genres.length > 0 ? anime.genres[0] : "Stream Matrix";
+
+      // Converts the anime title into a format Gogoanime can read natively
+      // Example: "Chainsaw Man" becomes "chainsaw-man"
+      const lookupSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const streamingUrl = `https://gogoanime3.co/category/${lookupSlug}`;
+
       grid.innerHTML += `
-        <div class="anime-card" data-url="${anime.url || '#'}">
+        <div class="anime-card" data-url="${streamingUrl}">
             <div class="anime-poster" style="background-image: url('${posterImg}')"></div>
             <div class="anime-info">
-                <div class="anime-title">${anime.title}</div>
-                <div class="anime-rating"><i class="fas fa-play-circle"></i> ${anime.score}</div>
-                <div class="anime-genres">Live Stream Matrix</div>
+                <div class="anime-title">${title}</div>
+                <div class="anime-rating"><i class="fas fa-play-circle"></i> ${score}</div>
+                <div class="anime-genres">${primaryGenre} • Live Stream</div>
             </div>
         </div>
       `;
     });
 
-    // Custom interactive streaming routers
+    // Binds direct navigation redirection handlers to each dynamic element
     document.querySelectorAll(".anime-card").forEach((card) => {
       card.addEventListener("click", function () {
         const targetStream = this.getAttribute("data-url");
-        const title = this.querySelector(".anime-title").textContent;
-        
         if (targetStream && targetStream !== '#') {
           window.open(targetStream, '_blank');
-        } else {
-          alert(`Streaming mirrors generating for: ${title}...`);
         }
       });
     });
 
-    console.log(`✅ Successfully loaded ${animeList.length} live cloud anime cards into the DOM!`);
+    console.log(`✅ Successfully loaded ${animeList.length} real-time Animeflix sync cards into the layout!`);
 
   } catch (err) {
     console.error("Critical API loading error exception parsed: ", err);
@@ -86,9 +106,9 @@ async function loadAnimeAPI() {
     if (grid) {
       grid.innerHTML = `
         <div style="color: #ff4757; text-align: center; padding: 20px; font-weight: bold; width: 100%;">
-          ⚠️ Connection Offline<br>
+          ⚠️ Sync Terminal Offline<br>
           <span style="font-size: 12px; font-weight: normal; color: #a4b0be;">
-            Make sure your Render web service dashboard deployment is active and working!
+            Failed to parse content parameters from the media stream endpoint layer.
           </span>
         </div>
       `;
@@ -97,7 +117,6 @@ async function loadAnimeAPI() {
 }
 
 function initNavigationSystems() {
-  // Core header categories tracker binding
   document.querySelectorAll(".nav-tab").forEach((tab) => {
     tab.addEventListener("click", function (e) {
       e.preventDefault();
@@ -106,7 +125,6 @@ function initNavigationSystems() {
     });
   });
 
-  // Sidebar selection mapping updates
   document.querySelectorAll(".sidebar-item").forEach((item) => {
     if(item.id === "sidebarSettingsTrigger" || item.id === "sidebarLoginTrigger") return;
     item.addEventListener("click", function (e) {
@@ -116,28 +134,24 @@ function initNavigationSystems() {
     });
   });
 
-  // Interactive video modal warning frames
-  const alertPlay = () => alert("Initiating high-bitrate video container stream for One Punch Man!");
+  const alertPlay = () => alert("Connecting direct Gogoanime audio/video array channel feed...");
   document.getElementById("heroPlayBtn")?.addEventListener("click", (e) => { e.preventDefault(); alertPlay(); });
   document.getElementById("heroCirclePlayBtn")?.addEventListener("click", alertPlay);
 
   document.querySelectorAll(".popular-item").forEach((item) => {
     item.addEventListener("click", function () {
       const title = this.querySelector("h4").textContent;
-      alert(`Opening verified collection feed matrix for: ${title}...`);
+      const lookupSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      window.open(`https://gogoanime3.co/category/${lookupSlug}`, '_blank');
     });
   });
 }
 
-// ==========================================
-// SECTION B: ARCHITECTURE SYSTEM CONTROL ENGINE
-// ==========================================
 function initSettingsEngine() {
     const modal = document.getElementById('settingsModal');
     const closeBtn = document.getElementById('closeSettingsBtn');
     const saveBtn = document.getElementById('saveSettingsBtn');
     const resetBtn = document.getElementById('resetSettingsBtn');
-
     const triggerHeader = document.getElementById('headerSettingsTrigger');
     const triggerSidebar = document.getElementById('sidebarSettingsTrigger');
 
@@ -145,9 +159,7 @@ function initSettingsEngine() {
     if (triggerSidebar) triggerSidebar.addEventListener('click', (e) => { e.preventDefault(); modal.classList.add('open'); });
     if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('open'));
     
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.remove('open');
-    });
+    window.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
 
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
@@ -179,13 +191,10 @@ function initSettingsEngine() {
 function applyLiveLayoutStates(theme, showLeft, showRight, showHero) {
     document.body.classList.remove('theme-default', 'theme-crimson', 'theme-cyberpunk', 'theme-frost');
     document.body.classList.add(`theme-${theme}`);
-
     const leftSide = document.getElementById('leftSidebar');
     if (leftSide) leftSide.classList.toggle('hide-panel', !(showLeft === true || showLeft === 'true'));
-
     const rightSide = document.getElementById('rightSidebar');
     if (rightSide) rightSide.classList.toggle('hide-panel', !(showRight === true || showRight === 'true'));
-
     const hero = document.getElementById('heroBanner');
     if (hero) hero.classList.toggle('hide-panel', !(showHero === true || showHero === 'true'));
 }
@@ -204,14 +213,10 @@ function applySavedConfigOnStartup() {
     applyLiveLayoutStates(savedTheme, savedLeft, savedRight, savedHero);
 }
 
-// ==========================================
-// SECTION C: INTERACTIVE IDENTITY PORTAL
-// ==========================================
 function initAuthenticationMatrix() {
     const modal = document.getElementById('authModal');
     const closeBtn = document.getElementById('closeAuthBtn');
     const togglePasswordBtn = document.getElementById('togglePasswordBtn');
-
     const profileTrigger = document.getElementById('headerProfileTrigger');
     const sidebarLoginTrigger = document.getElementById('sidebarLoginTrigger');
 
@@ -219,9 +224,7 @@ function initAuthenticationMatrix() {
     if (sidebarLoginTrigger) sidebarLoginTrigger.addEventListener('click', (e) => { e.preventDefault(); openAuthInterface(); });
     if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('open'));
 
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.remove('open');
-    });
+    window.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
 
     if (togglePasswordBtn) {
         togglePasswordBtn.addEventListener('click', function () {
@@ -238,10 +241,9 @@ function initAuthenticationMatrix() {
     checkExistingUserSession();
 }
 
-// Keep regular registration and session mechanisms intact
 function openAuthInterface() {
     if (localStorage.getItem('da9_userSession')) {
-        if (confirm('🔒 Sign Out from your current dude9anime profile account session?')) {
+        if (confirm('🔒 Sign Out from your current profile account session?')) {
             localStorage.removeItem('da9_userSession');
             location.reload();
         }
@@ -288,16 +290,14 @@ function handleAuthSubmit(event) {
         const username = document.getElementById('authUsername').value.trim();
         if (password.length < 6) {
             alertBox.classList.add('error');
-            alertBox.textContent = '❌ Security key error: Passwords must be at least 6 tokens long.';
+            alertBox.textContent = '❌ Passwords must be at least 6 tokens long.';
             return;
         }
-
         localStorage.setItem('da9_savedUser', username);
         localStorage.setItem('da9_savedEmail', email);
         localStorage.setItem('da9_savedPass', password);
-
         alertBox.classList.add('success');
-        alertBox.textContent = '✨ Profile created! Redirecting to credentials console...';
+        alertBox.textContent = '✨ Profile created! Redirecting...';
         setTimeout(() => { switchAuthMode('login'); }, 1500);
     } else {
         const savedEmail = localStorage.getItem('da9_savedEmail') || 'admin@dude9anime.com';
@@ -314,7 +314,7 @@ function handleAuthSubmit(event) {
             }, 1200);
         } else {
             alertBox.classList.add('error');
-            alertBox.textContent = '❌ Credentials error: Invalid structural parameters matching execution sequence.';
+            alertBox.textContent = '❌ Invalid credentials parameters matching execution sequence.';
         }
     }
 }
