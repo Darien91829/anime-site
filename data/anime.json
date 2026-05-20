@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "Attack on Titan",
+    "year": 2013,
+    "episodes": 75,
+    "thumbnail": "assets/thumbnails/aot.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Jujutsu Kaisen",
+    "year": 2020,
+    "episodes": 24,
+    "thumbnail": "assets/thumbnails/jjk.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Demon Slayer",
+    "year": 2019,
+    "episodes": 26,
+    "thumbnail": "assets/thumbnails/demonslayer.jpg"
+  }
+]
