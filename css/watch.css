@@ -1,153 +1,154 @@
-/* --- Watch Space Split Layout Architecture --- */
-.watch-layout {
-  display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 2rem;
-  margin-top: 1rem;
+/* watch.css */
+
+/* Reset & Variables */
+:root {
+    --bg-main: #0b0c10;
+    --bg-card: #1f2833;
+    --accent-color: #45f3ff;
+    --text-main: #ffffff;
+    --text-muted: #c5c6c7;
+    --btn-hover: #14a2b8;
 }
 
-/* Player Column Components */
-.player-column {
-  display: flex;
-  flex-direction: column;
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-main);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-main);
 }
 
-.video-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background-color: black;
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+/* Layout Structure */
+.watch-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 20px;
+    gap: 25px;
 }
 
-.video-container video {
-  width: 100%;
-  height: 100%;
+/* Left Column: Video and Info */
+.player-section {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
 }
 
-.anime-header-details {
-  margin-top: 1.5rem;
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* Modern 16:9 Aspect Ratio */
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.anime-meta-tags {
-  display: flex;
-  gap: 0.5rem;
-  margin: 0.5rem 0 1rem 0;
+#video-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
-.tag-pill {
-  background-color: var(--surface-color);
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-muted);
+.anime-details {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--bg-card);
+    border-radius: 10px;
 }
 
-.tag-pill.accent {
-  color: var(--accent-cyan);
-  border: 1px solid rgba(0, 240, 255, 0.2);
+.anime-details h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    color: var(--accent-color);
 }
 
-.synopsis-box {
-  background-color: var(--surface-color);
-  padding: 1.5rem;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-muted);
-  font-size: 0.95rem;
+.anime-details p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
 }
 
-/* Sidebar Playlist Component Elements */
-.sidebar-column {
-  background-color: var(--surface-color);
-  border-radius: var(--radius-card);
-  border: 1px solid var(--border-color);
-  padding: 1.25rem;
-  height: max-content;
-  max-height: calc(100vh - 140px);
-  display: flex;
-  flex-direction: column;
+/* Right Column: Episode Selector */
+.episode-section {
+    flex: 1;
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    max-height: 600px; /* Limits size to stay synced with video height */
 }
 
-.panel-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 1rem;
+.episode-section h2 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #2f3e46;
+    padding-bottom: 10px;
 }
 
-.episode-list {
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding-right: 4px;
+#episode-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 10px;
+    overflow-y: auto; /* Adds a scrollbar if there are tons of episodes */
+    padding-right: 5px;
 }
 
-/* Elegant custom scrollbar */
-.episode-list::-webkit-scrollbar { width: 4px; }
-.episode-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 2px; }
-
-.episode-item {
-  display: flex;
-  gap: 0.75rem;
-  padding: 0.5rem;
-  border-radius: 8px;
-  text-decoration: none;
-  color: inherit;
-  transition: var(--transition-smooth);
-  background-color: rgba(255,255,255,0.02);
+/* Episode Buttons */
+#episode-container button {
+    background: #2a3543;
+    color: var(--text-main);
+    border: 1px solid transparent;
+    padding: 10px 5px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
-.episode-item:hover {
-  background-color: var(--surface-hover);
+#episode-container button:hover {
+    background: var(--accent-color);
+    color: var(--bg-main);
+    box-shadow: 0 0 10px rgba(69, 243, 255, 0.4);
 }
 
-.episode-item.active {
-  background-color: rgba(0, 240, 255, 0.05);
-  border: 1px solid rgba(0, 240, 255, 0.2);
+/* Active Episode State (Optional - class added via JS when clicked) */
+#episode-container button.active {
+    background: var(--accent-color);
+    color: var(--bg-main);
+    border: 1px solid var(--text-main);
 }
 
-.ep-thumb {
-  width: 110px;
-  aspect-ratio: 16 / 9;
-  background-color: var(--bg-color);
-  border-radius: 4px;
-  object-fit: cover;
+/* Custom Scrollbar styling for the episode list */
+#episode-container::-webkit-scrollbar {
+    width: 6px;
 }
 
-.ep-meta {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+#episode-container::-webkit-scrollbar-track {
+    background: var(--bg-card);
 }
 
-.ep-number {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--accent-pink);
+#episode-container::-webkit-scrollbar-thumb {
+    background: #4a5568;
+    border-radius: 3px;
 }
 
-.episode-item.active .ep-number {
-  color: var(--accent-cyan);
-}
-
-.ep-name {
-  font-size: 0.85rem;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 200px;
-  color: var(--text-main);
-}
-
-/* --- Responsive Engine Watch View --- */
-@media (max-width: 1024px) {
-  .watch-layout { grid-template-columns: 1fr; }
-  .sidebar-column { max-height: 400px; }
+/* --- Responsive Layout for Mobile Devices --- */
+@media (max-width: 900px) {
+    .watch-container {
+        flex-direction: column;
+        margin: 10px auto;
+    }
+    
+    .episode-section {
+        max-height: 300px; /* Prevents endless scrolling down on phones */
+    }
 }
