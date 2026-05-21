@@ -1,53 +1,46 @@
-// js/search.js
+// search.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('searchInput');
+const ANILIST_API_URL = 'https://graphql.anilist.co';
 
-    // Only run if the search input exists on the current page
-    if (searchInput) {
-        searchInput.addEventListener('input', handleSearch);
-    }
-});
+async function searchAnime(queryText) {
+    const query = `
+    query ($search: String) {
+      Page(perPage: 10) {
+        media(search: $search, type: ANIME) {
+          id
+          title {
+            romaji
+            english
+          }
+          coverImage {
+            large
+          }
+          episodes
+          description
+        }
+      }
+    }`;
 
-/**
- * Filters the anime array based on user input and re-renders the cards.
- */
-async function handleSearch(event) {
-    const query = event.target.value.toLowerCase().trim();
-    const container = document.getElementById('anime-container');
+    const variables = { search: queryText };
 
     try {
-        // Fetch the local dataset
-        const response = await fetch('data/anime.json');
-        const animeList = await response.json();
-
-        // If search bar is empty, show everything
-        if (query === '') {
-            renderAnimeCards(animeList);
-            return;
-        }
-
-        // Filter by English title or alternate title
-        const filteredAnime = animeList.filter(anime => {
-            const matchesTitle = anime.title.toLowerCase().includes(query);
-            const matchesAltTitle = anime.alt_title && anime.alt_title.toLowerCase().includes(query);
-            return matchesTitle || matchesAltTitle;
+        const response = await fetch(ANILIST_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, variables })
         });
-
-        // Update the layout with filtered results
-        if (filteredAnime.length > 0) {
-            renderAnimeCards(filteredAnime);
-        } else {
-            // UI Feedback for no results found
-            container.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem 0;">
-                    <p style="font-size: 1.2rem; margin-bottom: 0.5rem;">No anime found matching "${event.target.value}"</p>
-                    <p style="font-size: 0.9rem;">Try checking your spelling or search another title.</p>
-                </div>
-            `;
-        }
-
+        
+        const data = await response.json();
+        return data.data.Page.media;
     } catch (error) {
-        console.error('Error handling live search:', error);
+        console.error("Error fetching from AniList:", error);
+        return [];
     }
+}
+
+// Example usage: 
+// When a user clicks a search result, pass the title and total episodes to player.js
+function handleAnimeSelect(anime) {
+    const gogoQueryTitle = anime.title.romaji; // Best for Gogoanime mapping
+    window.location.href = `watch.html?title=${encodeURIComponent(gogoQueryTitle)}&episodes=${anime.episodes}`;
 }
