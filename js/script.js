@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadAnimeAPI() {
   console.log("📡 Querying AniList schema framework for live trending matrix...");
   
-  // The exact structured GraphQL schema requested by your codegen settings
   const query = `
     query {
       Page(page: 1, perPage: 24) {
@@ -66,15 +65,11 @@ async function loadAnimeAPI() {
     grid.innerHTML = "";
 
     animeList.forEach((anime) => {
-      // Pick English title if available, otherwise fall back to Romaji
       const displayTitle = anime.title.english || anime.title.romaji;
       const posterImg = anime.coverImage.large || 'https://via.placeholder.com/225x320?text=No+Poster';
-      
-      // Convert standard 100-point database scores to clean 10-point format
       const displayScore = anime.averageScore ? (anime.averageScore / 10).toFixed(2) : "8.40";
       const genreLabel = anime.genres && anime.genres.length > 0 ? anime.genres[0] : "Stream Matrix";
 
-      // Replicates the Animeflix dynamic tracking routes format to map slugs securely
       const cleanSlug = displayTitle.toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '');
@@ -93,7 +88,6 @@ async function loadAnimeAPI() {
       `;
     });
 
-    // Handle interactive card redirection instantly
     document.querySelectorAll(".anime-card").forEach((card) => {
       card.addEventListener("click", function () {
         const targetStream = this.getAttribute("data-url");
@@ -142,10 +136,16 @@ function initNavigationSystems() {
     });
   });
 
-  const alertPlay = () => alert("Connecting direct streaming audio/video link matrix parameters...");
-  document.getElementById("heroPlayBtn")?.addEventListener("click", (e) => { e.preventDefault(); alertPlay(); });
-  document.getElementById("heroCirclePlayBtn")?.addEventListener("click", alertPlay);
+  // ✨ FIXED: Removed annoying alerts. Hero section buttons now dynamically launch streams.
+  const handleHeroPlay = (e) => {
+    e.preventDefault();
+    window.open("https://gogoanime3.co/category/one-punch-man", '_blank');
+  };
 
+  document.getElementById("heroPlayBtn")?.addEventListener("click", handleHeroPlay);
+  document.getElementById("heroCirclePlayBtn")?.addEventListener("click", handleHeroPlay);
+
+  // ✨ FIXED: Clicking trending sidebar shows instantly loads the streaming source link
   document.querySelectorAll(".popular-item").forEach((item) => {
     item.addEventListener("click", function () {
       const title = this.querySelector("h4").textContent;
