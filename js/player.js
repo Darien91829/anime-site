@@ -1,5 +1,9 @@
 // player.js
 
+<iframe id="video-player" src="" allowfullscreen="true" frameborder="0"></iframe>
+
+<div id="episode-container"></div>
+
 // Gogoanime base URL frequently changes. Update as needed.
 const GOGO_BASE = "https://anitaku.pe"; 
 const CORS_PROXY = "https://cors-anywhere.herokuapp.com/"; // Use a proxy to bypass CORS restrictions
