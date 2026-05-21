@@ -1,94 +1,74 @@
-// js/player.js
+// player.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Grab the URL Query Parameter (e.g., ?id=2)
-    const urlParams = new URLSearchParams(window.location.search);
-    const animeId = urlParams.get('id');
+// Gogoanime base URL frequently changes. Update as needed.
+const GOGO_BASE = "https://anitaku.pe"; 
+const CORS_PROXY = "https://cors-anywhere.herokuapp.com/"; // Use a proxy to bypass CORS restrictions
 
-    if (animeId) {
-        loadWatchPageDetails(animeId);
-    } else {
-        // Fallback redirection to homepage if no ID is passed
-        window.location.href = 'index.html';
+// 1. Parse URL Parameters (?title=Naruto&episodes=220)
+const urlParams = new URLSearchParams(window.location.search);
+const animeTitle = urlParams.get('title');
+const totalEpisodes = parseInt(urlParams.get('episodes')) || 1;
+
+document.addEventListener("DOMContentLoaded", async () => {
+    if (animeTitle) {
+        console.log(`Loading player for: ${animeTitle}`);
+        const showSlug = await fetchGogoanimeSlug(animeTitle);
+        
+        if (showSlug) {
+            generateEpisodeList(showSlug, totalEpisodes);
+            // Default to loading episode 1
+            loadEpisodeStream(showSlug, 1);
+        } else {
+            alert("Could not automatically locate streams on Gogoanime for this title.");
+        }
     }
 });
 
-/**
- * Fetches data and updates the video screen and textual metadata blocks.
- */
-async function loadWatchPageDetails(id) {
+// 2. Search Gogoanime via CORS Proxy to get the unique show slug
+async function fetchGogoanimeSlug(title) {
+    const searchUrl = `${CORS_PROXY}${GOGO_BASE}/filter.html?keyword=${encodeURIComponent(title)}`;
+    
     try {
-        const response = await fetch('data/anime.json');
-        const animeList = await response.json();
-
-        // Find the specific anime object matching the URL ID
-        const selectedAnime = animeList.find(anime => anime.id === id);
-
-        if (!selectedAnime) {
-            document.getElementById('animeTitle').textContent = "Anime Not Found";
-            return;
-        }
-
-        // 2. Map JSON data fields to the DOM elements
-        document.getElementById('animeTitle').textContent = selectedAnime.title;
-        document.getElementById('animeDescription').textContent = selectedAnime.description;
-        document.getElementById('animeGenre').textContent = selectedAnime.genre.join(' / ');
+        const response = await fetch(searchUrl);
+        const htmlText = await response.text();
         
-        // Update document tab title dynamically
-        document.title = `Watching ${selectedAnime.title} - StreamNihongo`;
-
-        // 3. Generate Mock Episode Data based on the episode count in JSON
-        generateEpisodeSidebar(selectedAnime);
-
-    } catch (error) {
-        console.error('Error rendering watch view details:', error);
+        // Use DOMParser to parse the HTML string just like BeautifulSoup
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, 'text/html');
+        
+        const firstResult = doc.querySelector('ul.items li p.name a');
+        if (firstResult) {
+            const href = firstResult.getAttribute('href'); // e.g., "/category/naruto"
+            return href.replace('/category/', ''); // returns "naruto"
+        }
+    } catch (err) {
+        console.error("Scraping failed:", err);
     }
+    return null;
 }
 
-/**
- * Dynamically builds the clickable episode list inside the right-hand panel.
- */
-function generateEpisodeSidebar(anime) {
-    const listContainer = document.getElementById('episodeListContainer');
-    listContainer.innerHTML = ''; // Clear out the placeholder HTML structure
+// 3. Render the video player using Gogoanime's direct iframe embed structure
+function loadEpisodeStream(slug, episodeNumber) {
+    const videoPlayerFrame = document.getElementById("video-player"); // Your <iframe> element id
+    
+    // Gogoanime embeds follow this specific layout
+    const streamEmbedUrl = `${GOGO_BASE}/${slug}-episode-${episodeNumber}`;
+    
+    // Note: To embed directly without the website layout, standard gogo scrapers 
+    // fetch the episode page and scrape the iframe source (`src`) tagged inside `.play-video`.
+    // For now, this will direct to the stream asset endpoint:
+    videoPlayerFrame.src = streamEmbedUrl;
+}
 
-    // Limit generation to maximum 12 episodes for UI cleanliness if count is huge
-    const totalEpisodesToShow = Math.min(anime.episodes, 12);
+// 4. Generate buttons for your UI based on AniList episode data
+function generateEpisodeList(slug, episodesCount) {
+    const container = document.getElementById("episode-container"); // Your episode layout container
+    container.innerHTML = ""; 
 
-    for (let i = 1; i <= totalEpisodesToShow; i++) {
-        const epItem = document.createElement('a');
-        epItem.href = '#';
-        
-        // Set first episode to active state visually out of the box
-        epItem.className = `episode-item ${i === 1 ? 'active' : ''}`;
-
-        epItem.innerHTML = `
-            <img class="ep-thumb" src="${anime.image}" alt="Episode Thumbnail">
-            <div class="ep-meta">
-                <span class="ep-number">Episode ${i}</span>
-                <span class="ep-name">Chapter Source File ${i}</span>
-            </div>
-        `;
-
-        // 4. Interactive Click Event to mimic episode switching
-        epItem.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            // Strip out active class from the old item
-            document.querySelector('.episode-item.active')?.classList.remove('active');
-            
-            // Apply active class to the current target item
-            epItem.classList.add('active');
-
-            // Update badge above description box
-            document.getElementById('episodeBadge').textContent = `EP ${i} Playing`;
-
-            // Reset video source file to simulate reload (using placeholder stream)
-            const player = document.getElementById('animePlayer');
-            player.currentTime = 0;
-            player.play();
-        });
-
-        listContainer.appendChild(epItem);
+    for (let i = 1; i <= episodesCount; i++) {
+        const btn = document.createElement("button");
+        btn.innerText = `Ep ${i}`;
+        btn.onclick = () => loadEpisodeStream(slug, i);
+        container.appendChild(btn);
     }
 }
