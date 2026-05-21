@@ -1,10 +1,10 @@
 /* ==========================================================================
-   DYNAMIC INTEGRATED RUNTIME CONTROLLER LOGIC ENGINE (ANILIST FLIX EDITION)
+   DYNAMIC INTEGRATED RUNTIME CONTROLLER LOGIC ENGINE (ANIMEFLIX CORE SYNC)
    ========================================================================== */
 let currentAuthMode = 'login';
 
-// Directly queries the AniList GraphQL engine (Safe, fast, and 24/7 cloud approved)
-const ANILIST_API_URL = "https://graphql.anilist.co";
+// Official safe public endpoint pulled from your .graphqlrc.yml configuration
+const ANILIST_API_URL = "https://graphql.anilist.co/";
 
 document.addEventListener('DOMContentLoaded', () => {
     loadAnimeAPI();
@@ -15,16 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// SECTION A: ANILIST MEDIA SYNC ENGINE
+// SECTION A: GRAPHQL LIVE DATA SYNC ENGINE
 // ==========================================
 async function loadAnimeAPI() {
-  console.log("📡 Accessing live media streams via AniList Core Sync Layer...");
+  console.log("📡 Querying AniList schema framework for live trending matrix...");
   
-  // The official GraphQL parameters used to fetch trending shows
+  // The exact structured GraphQL schema requested by your codegen settings
   const query = `
     query {
       Page(page: 1, perPage: 24) {
-        media(sort: TRENDING_DESC, type: ANIME) {
+        media(sort: TRENDING_DESC, type: ANIME, isAdult: false) {
           id
           title {
             english
@@ -51,11 +51,11 @@ async function loadAnimeAPI() {
     });
 
     if (!res.ok) {
-      throw new Error(`AniList returned structural status error: ${res.status}`);
+      throw new Error(`GraphQL protocol returned operational error code: ${res.status}`);
     }
 
-    const jsonResult = await res.json();
-    const animeList = jsonResult.data.Page.media;
+    const body = await res.json();
+    const animeList = body.data.Page.media;
 
     const grid = document.getElementById("animeGrid");
     if (!grid) {
@@ -66,29 +66,34 @@ async function loadAnimeAPI() {
     grid.innerHTML = "";
 
     animeList.forEach((anime) => {
-      const title = anime.title.english || anime.title.romaji;
+      // Pick English title if available, otherwise fall back to Romaji
+      const displayTitle = anime.title.english || anime.title.romaji;
       const posterImg = anime.coverImage.large || 'https://via.placeholder.com/225x320?text=No+Poster';
-      const score = anime.averageScore ? (anime.averageScore / 10).toFixed(1) : "8.1";
-      const primaryGenre = anime.genres && anime.genres.length > 0 ? anime.genres[0] : "Stream Matrix";
+      
+      // Convert standard 100-point database scores to clean 10-point format
+      const displayScore = anime.averageScore ? (anime.averageScore / 10).toFixed(2) : "8.40";
+      const genreLabel = anime.genres && anime.genres.length > 0 ? anime.genres[0] : "Stream Matrix";
 
-      // Converts the anime title into a format Gogoanime can read natively
-      // Example: "Chainsaw Man" becomes "chainsaw-man"
-      const lookupSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      const streamingUrl = `https://gogoanime3.co/category/${lookupSlug}`;
+      // Replicates the Animeflix dynamic tracking routes format to map slugs securely
+      const cleanSlug = displayTitle.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+        
+      const routeUrl = `https://gogoanime3.co/category/${cleanSlug}`;
 
       grid.innerHTML += `
-        <div class="anime-card" data-url="${streamingUrl}">
+        <div class="anime-card" data-url="${routeUrl}">
             <div class="anime-poster" style="background-image: url('${posterImg}')"></div>
             <div class="anime-info">
-                <div class="anime-title">${title}</div>
-                <div class="anime-rating"><i class="fas fa-play-circle"></i> ${score}</div>
-                <div class="anime-genres">${primaryGenre} • Live Stream</div>
+                <div class="anime-title">${displayTitle}</div>
+                <div class="anime-rating"><i class="fas fa-star"></i> ${displayScore}</div>
+                <div class="anime-genres">${genreLabel} • Live Feed</div>
             </div>
         </div>
       `;
     });
 
-    // Binds direct navigation redirection handlers to each dynamic element
+    // Handle interactive card redirection instantly
     document.querySelectorAll(".anime-card").forEach((card) => {
       card.addEventListener("click", function () {
         const targetStream = this.getAttribute("data-url");
@@ -98,17 +103,17 @@ async function loadAnimeAPI() {
       });
     });
 
-    console.log(`✅ Successfully loaded ${animeList.length} real-time Animeflix sync cards into the layout!`);
+    console.log(`✅ Successfully injected ${animeList.length} live GraphQL media elements into the DOM structure!`);
 
   } catch (err) {
-    console.error("Critical API loading error exception parsed: ", err);
+    console.error("Critical architecture extraction exception: ", err);
     const grid = document.getElementById("animeGrid");
     if (grid) {
       grid.innerHTML = `
         <div style="color: #ff4757; text-align: center; padding: 20px; font-weight: bold; width: 100%;">
-          ⚠️ Sync Terminal Offline<br>
+          ⚠️ Sync Node Disconnected<br>
           <span style="font-size: 12px; font-weight: normal; color: #a4b0be;">
-            Failed to parse content parameters from the media stream endpoint layer.
+            Failed to fetch structure parameters from public cloud endpoints.
           </span>
         </div>
       `;
@@ -116,6 +121,9 @@ async function loadAnimeAPI() {
   }
 }
 
+// ==========================================
+// SECTION B: CORE INTERFACE HANDLERS
+// ==========================================
 function initNavigationSystems() {
   document.querySelectorAll(".nav-tab").forEach((tab) => {
     tab.addEventListener("click", function (e) {
@@ -134,15 +142,15 @@ function initNavigationSystems() {
     });
   });
 
-  const alertPlay = () => alert("Connecting direct Gogoanime audio/video array channel feed...");
+  const alertPlay = () => alert("Connecting direct streaming audio/video link matrix parameters...");
   document.getElementById("heroPlayBtn")?.addEventListener("click", (e) => { e.preventDefault(); alertPlay(); });
   document.getElementById("heroCirclePlayBtn")?.addEventListener("click", alertPlay);
 
   document.querySelectorAll(".popular-item").forEach((item) => {
     item.addEventListener("click", function () {
       const title = this.querySelector("h4").textContent;
-      const lookupSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      window.open(`https://gogoanime3.co/category/${lookupSlug}`, '_blank');
+      const cleanSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      window.open(`https://gogoanime3.co/category/${cleanSlug}`, '_blank');
     });
   });
 }
@@ -243,7 +251,7 @@ function initAuthenticationMatrix() {
 
 function openAuthInterface() {
     if (localStorage.getItem('da9_userSession')) {
-        if (confirm('🔒 Sign Out from your current profile account session?')) {
+        if (confirm('🔒 Sign Out from your current account profile session?')) {
             localStorage.removeItem('da9_userSession');
             location.reload();
         }
@@ -290,14 +298,14 @@ function handleAuthSubmit(event) {
         const username = document.getElementById('authUsername').value.trim();
         if (password.length < 6) {
             alertBox.classList.add('error');
-            alertBox.textContent = '❌ Passwords must be at least 6 tokens long.';
+            alertBox.textContent = '❌ Security restriction: Password must be at least 6 characters.';
             return;
         }
         localStorage.setItem('da9_savedUser', username);
         localStorage.setItem('da9_savedEmail', email);
         localStorage.setItem('da9_savedPass', password);
         alertBox.classList.add('success');
-        alertBox.textContent = '✨ Profile created! Redirecting...';
+        alertBox.textContent = '✨ Profile created! Redirecting to auth console...';
         setTimeout(() => { switchAuthMode('login'); }, 1500);
     } else {
         const savedEmail = localStorage.getItem('da9_savedEmail') || 'admin@dude9anime.com';
@@ -314,7 +322,7 @@ function handleAuthSubmit(event) {
             }, 1200);
         } else {
             alertBox.classList.add('error');
-            alertBox.textContent = '❌ Invalid credentials parameters matching execution sequence.';
+            alertBox.textContent = '❌ Credentials error: Invalid parameter matching pattern.';
         }
     }
 }
